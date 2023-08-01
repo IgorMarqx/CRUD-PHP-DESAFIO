@@ -1,19 +1,39 @@
 <?php
 session_start();
-include_once('../model/DB.php');
+require_once '../model/DB.php';
+
 
 function create()
 {
+    global $con;
+
+    $name = filter_input(INPUT_POST, 'name', FILTER_DEFAULT);
+    $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+    $cpf = filter_input(INPUT_POST, 'cpf', FILTER_VALIDATE_INT);
+    $telephone = filter_input(INPUT_POST, 'telephone', FILTER_VALIDATE_INT);
+    $birthdate = filter_input(INPUT_POST, 'birthdate', FILTER_VALIDATE_INT);
+
     if (!validate()) {
         header('location: ../view/create.php');
         return;
     } else {
-        
+        $sql = "INSERT INTO clientes (name, email, cpf, telephone, birthdate) VALUES (?,?,?,?,?)";
+        $insert = $con->prepare($sql);
+        $insert->bindParam(1, $name);
+        $insert->bindParam(2, $email);
+        $insert->bindParam(3, $cpf);
+        $insert->bindParam(4, $telephone);
+        $insert->bindParam(5, $birthdate);
+        $insert->execute();
+
+        $_SESSION['success'] = true;
+        header('location: ../../');
     }
 }
 
 function validate()
 {
+    global $con;
 
     $name = filter_input(INPUT_POST, 'name', FILTER_DEFAULT);
     $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
@@ -33,6 +53,8 @@ function validate()
         }
 
         if (empty($email)) {
+            $sql = "SELECT email FROM  clientes";
+
             $_SESSION['email'] = 'Campo vazio ou inválido.';
         }
 
