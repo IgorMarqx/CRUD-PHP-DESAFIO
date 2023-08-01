@@ -47,14 +47,32 @@ function validate()
     $_SESSION['telephone_input'] = $telephone;
     $_SESSION['bithdate_input'] = $birthdate;
 
+    $emailValidate = $con->prepare('SELECT * FROM clientes WHERE email =  :email');
+    $emailValidate->bindValue(':email', $email);
+    $emailValidate->execute();
+
+    if ($emailValidate->rowCount() > 0) {
+        $_SESSION['email'] = 'E-mail já existente.';
+        header('location: ../../');
+        return;
+    }
+
+    $cpfValidate = $con->prepare('SELECT * FROM clientes WHERE cpf = :cpf');
+    $cpfValidate->bindValue(':cpf', $cpf);
+    $cpfValidate->execute();
+
+    if ($cpfValidate->rowCount() > 0) {
+        $_SESSION['cpf'] = 'CPF já existente.';
+        header('location: ../../');
+        return;
+    }
+
     if (empty($name) || empty($email) || empty($cpf) || empty($telephone) || empty($birthdate)) {
         if (empty($name)) {
             $_SESSION['name'] = 'Preencha esse campo.';
         }
 
         if (empty($email)) {
-            $sql = "SELECT email FROM  clientes";
-
             $_SESSION['email'] = 'Campo vazio ou inválido.';
         }
 
