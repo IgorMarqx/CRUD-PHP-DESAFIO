@@ -1,6 +1,6 @@
 <?php
 
-function update()
+function update($id)
 {
-    
+
 }
