@@ -1,10 +1,13 @@
 <?php
+session_start();
 require_once './app/model/DB.php';
 require_once './partials/app.php';
 require_once './app/controller/readController.php';
 
+
 $clients = read();
 ?>
+
 
 <div class="container mt-2 mb-4">
     <a class="btn btn-success" href="./app/view/create.php" role="button">Criar cliente</a>
@@ -35,7 +38,7 @@ $clients = read();
                     <th><?= $row['telephone'] ?></th>
                     <th><?= implode('/', array_reverse(explode('-', $row['birthdate']))) ?></th>
                     <th>
-                        <a href="./app//view/update.php?id=<?php echo $row['id'] ?> "class="me-2">
+                        <a href="./app//view/update.php?id=<?php echo $row['id'] ?> " class="me-2">
                             <i class="fa-solid fa-pen"></i>
                         </a>
                         <a href="">
