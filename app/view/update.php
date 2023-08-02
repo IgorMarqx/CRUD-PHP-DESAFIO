@@ -1,6 +1,11 @@
 <?php
 session_start();
 include_once('../../partials/app.php');
+include_once('../controller/updateController.php');
+
+$id = $_GET['id'];
+
+$updateId = update($id);
 ?>
 
 <div class="container mt-2 mb-4">
