@@ -35,7 +35,7 @@ $clients = read();
                     <th><?= $row['telephone'] ?></th>
                     <th><?= implode('/', array_reverse(explode('-', $row['birthdate']))) ?></th>
                     <th>
-                        <a href="./app//view/update.php?id="<?php echo $row['id'] ?> class="me-2">
+                        <a href="./app//view/update.php?id=<?php echo $row['id'] ?> "class="me-2">
                             <i class="fa-solid fa-pen"></i>
                         </a>
                         <a href="">
