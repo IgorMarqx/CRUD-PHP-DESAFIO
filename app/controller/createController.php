@@ -2,16 +2,18 @@
 session_start();
 require_once '../model/DB.php';
 
-
 function create()
 {
     global $con;
 
     $name = filter_input(INPUT_POST, 'name', FILTER_DEFAULT);
     $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
-    $cpf = filter_input(INPUT_POST, 'cpf', FILTER_VALIDATE_INT);
-    $telephone = filter_input(INPUT_POST, 'telephone', FILTER_VALIDATE_INT);
-    $birthdate = filter_input(INPUT_POST, 'birthdate', FILTER_VALIDATE_INT);
+    $cpf = filter_input(INPUT_POST, 'cpf', FILTER_DEFAULT);
+    $telephone = filter_input(INPUT_POST, 'telephone', FILTER_DEFAULT);
+    $birthdate = filter_input(INPUT_POST, 'birthdate', FILTER_DEFAULT);
+
+    $oldBirth = explode('/', $birthdate);
+    $newBirth = implode('-', array_reverse($oldBirth));
 
     if (!validate()) {
         header('location: ../view/create.php');
@@ -23,12 +25,18 @@ function create()
         $insert->bindParam(2, $email);
         $insert->bindParam(3, $cpf);
         $insert->bindParam(4, $telephone);
-        $insert->bindParam(5, $birthdate);
+        $insert->bindParam(5, $newBirth);
         $insert->execute();
 
         $_SESSION['success'] = true;
         header('location: ../../');
     }
+
+    unset($_SESSION['name_input']);
+    unset($_SESSION['email_input']);
+    unset($_SESSION['cpf_input']);
+    unset($_SESSION['telephone_input']);
+    unset($_SESSION['bithdate_input']);
 }
 
 function validate()
@@ -37,9 +45,9 @@ function validate()
 
     $name = filter_input(INPUT_POST, 'name', FILTER_DEFAULT);
     $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
-    $cpf = filter_input(INPUT_POST, 'cpf', FILTER_VALIDATE_INT);
-    $telephone = filter_input(INPUT_POST, 'telephone', FILTER_VALIDATE_INT);
-    $birthdate = filter_input(INPUT_POST, 'birthdate', FILTER_VALIDATE_INT);
+    $cpf = filter_input(INPUT_POST, 'cpf', FILTER_DEFAULT);
+    $telephone = filter_input(INPUT_POST, 'telephone', FILTER_DEFAULT);
+    $birthdate = filter_input(INPUT_POST, 'birthdate', FILTER_DEFAULT);
 
     $_SESSION['name_input'] = $name;
     $_SESSION['email_input'] = $email;
@@ -52,7 +60,7 @@ function validate()
     $emailValidate->execute();
 
     if ($emailValidate->rowCount() > 0) {
-        $_SESSION['email'] = 'E-mail já existente.';
+        $_SESSION['errors']['email_exist'] = 'E-mail já existente.';
         header('location: ../../');
         return;
     }
@@ -62,34 +70,42 @@ function validate()
     $cpfValidate->execute();
 
     if ($cpfValidate->rowCount() > 0) {
-        $_SESSION['cpf'] = 'CPF já existente.';
+        $_SESSION['errors']['cpf_exist'] = 'CPF já existente.';
         header('location: ../../');
         return;
     }
 
-    if (empty($name) || empty($email) || empty($cpf) || empty($telephone) || empty($birthdate)) {
-        if (empty($name)) {
-            $_SESSION['name'] = 'Preencha esse campo.';
-        }
+    $validate = [
+        'name' => $name,
+        'email' => $email,
+        'cpf' => $cpf,
+        'telephone' => $telephone,
+        'birthdate' => $birthdate,
+    ];
 
-        if (empty($email)) {
-            $_SESSION['email'] = 'Campo vazio ou inválido.';
-        }
+    $errors = [];
 
-        if (empty($cpf)) {
-            $_SESSION['cpf'] = 'Campo vazio ou inválido.';
+    foreach ($validate as $key => $error) {
+        if (empty($error)) {
+            $errors[$key] = 'Campo obrigatório.';
         }
-
-        if (empty($telephone)) {
-            $_SESSION['telephone'] = 'Campo vazio ou inválido.';
-        }
-
-        if (empty($birthdate)) {
-            $_SESSION['birthdate'] = 'Campo vazio ou inválido.';
-        }
-
-        return false;
     }
+
+    $_SESSION['errors'] = $errors;
+    
+    if (strlen($telephone) < 14) {
+        $_SESSION['errors']['telephone'] = 'Número inválido.';
+    }
+    
+    if (strlen($cpf) < 14) {
+        $_SESSION['errors']['cpf'] = 'CPF inválido.';
+    }
+    
+    if(strlen($birthdate) <  10){
+        $_SESSION['errors']['birthdate'] = 'Data inválida.';    
+    }
+
+    return count($errors) === 0;
 
     return true;
 }
