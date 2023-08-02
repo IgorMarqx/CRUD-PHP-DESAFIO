@@ -3,7 +3,7 @@ session_start();
 include_once('../../partials/app.php');
 include_once('../controller/updateController.php');
 
-$id = $_GET['id'];
+$id = intval($_GET['id']);
 
 $updateId = update($id);
 ?>
@@ -14,7 +14,7 @@ $updateId = update($id);
 
 <div class="outForm">
     <div class="container">
-        <form class="row" method="POST" action="../controller/createController.php">
+        <form class="row" method="POST" action="../controller/updateController.php">
             <div class="col-md-4">
                 <label for="name" class="form-label">Nome</label>
                 <input type="text" class="form-control" id="name" placeholder="ex: Igor Marques" name="name">
