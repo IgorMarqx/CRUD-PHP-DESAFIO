@@ -4,7 +4,7 @@ include_once('../../partials/app.php');
 ?>
 
 <div class="container mt-2 mb-4">
-    <a class="btn btn-danger" href="../../" role="button">Voltar</a>
+    <a class="btn btn-danger" href="../../../" role="button">Voltar</a>
 </div>
 
 <div class="outForm">
