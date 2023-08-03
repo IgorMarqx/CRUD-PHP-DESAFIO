@@ -9,8 +9,6 @@ $clients = read();
 include_once './partials/modal.php';
 ?>
 
-
-
 <div class="container mt-2 mb-4">
     <a class="btn btn-success" href="./app/view/create.php" role="button">Criar cliente</a>
 </div>
@@ -25,7 +23,7 @@ include_once './partials/modal.php';
                 <th>E-mail</th>
                 <th>CPF</th>
                 <th>Telefone</th>
-                <th>Data de Nascimneto</th>
+                <th>Data de Nascimento</th>
                 <th>Ações</th>
             </tr>
         </thead>
