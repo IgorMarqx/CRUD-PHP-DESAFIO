@@ -6,7 +6,9 @@ require_once './app/controller/readController.php';
 
 
 $clients = read();
+include_once './partials/modal.php';
 ?>
+
 
 
 <div class="container mt-2 mb-4">
@@ -41,7 +43,7 @@ $clients = read();
                         <a href="./app//view/update.php?id=<?php echo $row['id'] ?> " class="me-2">
                             <i class="fa-solid fa-pen"></i>
                         </a>
-                        <a href="">
+                        <a href="" data-bs-toggle="modal" data-bs-target="#exampleModal" data-id="<?= $row['id'] ?>">
                             <i class="fa-regular fa-trash-can"></i>
                         </a>
                     </th>
@@ -50,3 +52,14 @@ $clients = read();
         </tbody>
     </table>
 </div>
+
+<script>
+    $(document).ready(function() {
+        $('a[data-bs-toggle="modal"]').on('click', function() {
+            var clientId = $(this).data('id');
+            var deleteLink = './app/controller/deleteController.php?id=' + clientId;
+
+            $('#deleteBtn').attr('href', deleteLink);
+        });
+    });
+</script>
