@@ -3,7 +3,7 @@ session_start();
 include_once('../../partials/app.php');
 include_once('../controller/updateController.php');
 
-$id = intval($_GET['id']);
+$id = filter_input(INPUT_GET, 'id');
 
 $updateId = update($id);
 ?>
