@@ -16,8 +16,11 @@ function update($id)
     $find->bindValue(':id', $id);
     $find->execute();
 
-    foreach ($find as $row) {
-        echo $row['id'];
-    }
+    $data = $find->fetch(PDO::FETCH_ASSOC);
+
+    return $data;
 }
 
+function edit()
+{
+}
