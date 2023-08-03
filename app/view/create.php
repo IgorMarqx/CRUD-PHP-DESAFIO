@@ -18,6 +18,7 @@ include_once('../../partials/app.php');
                     <span class="text-danger">
                         <?php
                         echo $_SESSION['errors']['name'];
+                        unset($_SESSION['errors']['name']);
                         ?>
                     </span>
                 <?php } ?>
