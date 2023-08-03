@@ -6,7 +6,7 @@ function destroy()
 {
     global $con;
 
-    $id = $_GET['id'];
+    $id = filter_input(INPUT_GET, 'id');
 
     if(!$id){
         header('location: ../../');
