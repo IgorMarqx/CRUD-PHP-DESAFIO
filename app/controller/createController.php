@@ -15,7 +15,7 @@ function create()
     $oldBirth = explode('/', $birthdate);
     $newBirth = implode('-', array_reverse($oldBirth));
 
-    if (!validate()) {
+    if (!validate($name, $email, $cpf, $telephone, $birthdate)) {
         header('location: ../view/create.php');
         return;
     } else {
@@ -39,15 +39,9 @@ function create()
     unset($_SESSION['bithdate_input']);
 }
 
-function validate()
+function validate($name, $email, $cpf, $telephone, $birthdate)
 {
     global $con;
-
-    $name = filter_input(INPUT_POST, 'name', FILTER_DEFAULT);
-    $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
-    $cpf = filter_input(INPUT_POST, 'cpf', FILTER_DEFAULT);
-    $telephone = filter_input(INPUT_POST, 'telephone', FILTER_DEFAULT);
-    $birthdate = filter_input(INPUT_POST, 'birthdate', FILTER_DEFAULT);
 
     $_SESSION['name_input'] = $name;
     $_SESSION['email_input'] = $email;
