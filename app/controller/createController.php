@@ -86,19 +86,27 @@ function validate($name, $email, $cpf, $telephone, $birthdate)
     }
 
     $_SESSION['errors'] = $errors;
-    
+
     if (strlen($telephone) < 14) {
         $_SESSION['errors']['telephone'] = 'Número inválido.';
     }
-    
+
     if (strlen($cpf) < 14) {
         $_SESSION['errors']['cpf'] = 'CPF inválido.';
     }
-    
-    if(strlen($birthdate) <  10){
-        $_SESSION['errors']['birthdate'] = 'Data inválida.';    
-    }
 
+    $oldBirth = explode('/', $birthdate);
+
+    $day = $oldBirth[0];
+    $month = $oldBirth[1];
+    $year = $oldBirth[2];
+    
+    $validateDate = checkdate($month, $day, $year);
+
+    if (strlen($birthdate) <  10 || $validateDate == false) {
+        $_SESSION['errors']['birthdate'] = 'Data inválida.';
+    }
+   
     return count($errors) === 0;
 
     return true;
