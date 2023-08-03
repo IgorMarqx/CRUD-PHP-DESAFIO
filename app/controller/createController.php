@@ -74,6 +74,7 @@ function validate($name, $email, $cpf, $telephone, $birthdate)
         'email' => $email,
         'cpf' => $cpf,
         'telephone' => $telephone,
+        'birthdate' => $birthdate,
     ];
 
     $errors = [];
