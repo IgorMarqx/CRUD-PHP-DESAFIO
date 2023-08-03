@@ -74,13 +74,12 @@ function validate($name, $email, $cpf, $telephone, $birthdate)
         'email' => $email,
         'cpf' => $cpf,
         'telephone' => $telephone,
-        'birthdate' => $birthdate,
     ];
 
     $errors = [];
 
-    foreach ($validate as $key => $error) {
-        if (empty($error)) {
+    foreach ($validate as $key => $value) {
+        if (empty($value)) {
             $errors[$key] = 'Campo obrigatório.';
         }
     }
@@ -89,27 +88,33 @@ function validate($name, $email, $cpf, $telephone, $birthdate)
 
     if (strlen($telephone) < 14) {
         $_SESSION['errors']['telephone'] = 'Número inválido.';
+        return false;
     }
 
     if (strlen($cpf) < 14) {
         $_SESSION['errors']['cpf'] = 'CPF inválido.';
+        return false;
     }
 
     $oldBirth = explode('/', $birthdate);
 
-    $day = $oldBirth[0];
-    $month = $oldBirth[1];
-    $year = $oldBirth[2];
-    
-    $validateDate = checkdate($month, $day, $year);
-
-    if (strlen($birthdate) <  10 || $validateDate == false) {
+    if ($birthdate < 10) {
         $_SESSION['errors']['birthdate'] = 'Data inválida.';
-    }
-   
-    return count($errors) === 0;
+        return false;
+    } else {
+        $day = $oldBirth[0];
+        $month = $oldBirth[1];
+        $year = $oldBirth[2];
 
-    return true;
+        $validateDate = checkdate($month, $day, $year);
+
+        if ($validateDate == false) {
+            $_SESSION['errors']['birthdate'] = 'Data inválida.';
+            return false;
+        }
+    }
+
+    return count($errors) === 0;
 }
 
 
