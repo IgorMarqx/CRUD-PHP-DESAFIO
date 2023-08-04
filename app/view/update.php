@@ -14,7 +14,9 @@ $updateId = update($id);
 
 <div class="outForm">
     <div class="container">
-        <form class="row" method="POST" action="../controller/updateController.php">
+        <form class="row" method="POST" action="../controller/editController.php">
+            <input type="hidden" name="id" value="<?= $id ?>">
+
             <div class="col-md-4">
                 <label for="name" class="form-label">Nome</label>
                 <input type="text" class="form-control" id="name" placeholder="ex: Igor Marques" name="name" value="<?= $updateId['name'] ?>">
