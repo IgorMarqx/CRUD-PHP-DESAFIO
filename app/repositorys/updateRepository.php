@@ -20,6 +20,7 @@ function validate($name, $email, $cpf, $telephone, $birthdate)
 
     $errors = [];
 
+    
     foreach ($validate as $key => $value) {
         if (empty($value)) {
             $errors[$key] = 'Campo obrigatório.';
