@@ -21,21 +21,3 @@ function update($id)
 
     return $data;
 }
-
-function edit()
-{
-    $name = filter_input(INPUT_POST, 'name', FILTER_DEFAULT);
-    $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-    $cpf = filter_input(INPUT_POST, 'cpf', FILTER_DEFAULT);
-    $telephone = filter_input(INPUT_POST, 'telephone', FILTER_DEFAULT);
-    $birthdate = filter_input(INPUT_POST, 'birthdate', FILTER_DEFAULT);
-
-    if(validate($name, $email, $cpf, $telephone, $birthdate)){
-    }else{
-        header('location: ../view/update.php');
-        return;
-    }
-
-}
-
-
