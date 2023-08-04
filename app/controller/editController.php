@@ -13,6 +13,9 @@ function edit()
     $telephone = filter_input(INPUT_POST, 'telephone', FILTER_DEFAULT);
     $birthdate = filter_input(INPUT_POST, 'birthdate', FILTER_DEFAULT);
 
+    $oldBirth = explode('/',   $birthdate);
+    $newBirth = implode('-', array_reverse($oldBirth));
+
     if (!validate($name, $email, $cpf, $telephone, $birthdate)) {
         header('Location: ../view/update.php?=' . $id);
         return;
@@ -23,7 +26,7 @@ function edit()
         $update->bindValue('email', $email);
         $update->bindValue('cpf', $cpf);
         $update->bindValue('telephone', $telephone);
-        $update->bindValue('birthdate', $birthdate);
+        $update->bindValue('birthdate', $newBirth);
         $update->execute();
 
         header('location: ../../index.php');
